@@ -50,10 +50,7 @@ RUN chmod +x build_all.sh
 RUN ./build_all.sh
 
 # Set up a directory for the final application binaries (as defined by CMAKE_INSTALL_PREFIX)
-WORKDIR /app
+WORKDIR /usr/src/app # Default to the source/build directory
 
-# Default command: list available binaries and provide usage instructions
-CMD ["sh", "-c", "echo 'Available RISC-V binaries in /app/bin:'; ls -1 /app/bin; echo ''; echo 'To run an example (e.g., hello_c):'; echo '  qemu-riscv32 /app/bin/hello_c'; echo 'To run Rust example (hello_rust):'; echo '  qemu-riscv32 /app/bin/hello_rust'"]
-
-# To run a specific binary directly (example):
-# CMD ["qemu-riscv32", "/app/bin/hello_c"]
+# Default command: Provide a shell or a help message.
+CMD ["sh", "-c", "echo 'RISC-V Cross-Compilation Environment.'; echo 'Binaries are built and installed to /app/bin within the image.'; echo 'Mount your source code to /usr/src/app and run ./build_all.sh to build.'; echo 'Or use this image as a base for further operations. Starting shell...'; /bin/bash"]
