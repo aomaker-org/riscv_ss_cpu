@@ -1,34 +1,62 @@
 # This file will store combined log entries in YAML format.
 #
-# Example entry structure:
+# Log Types:
+# - interact: Records interactions between user and agent.
+#   Fields: id, timestamp, source ('user' or 'agent'), message
+# - dev: Records development actions, decisions, or findings.
+#   Fields: id, timestamp, component, message, details (object)
+# - run: Records execution of commands or scripts.
+#   Fields: id, timestamp, component, event, script_name, details (object)
+# - test: Records test execution details.
+#   Fields: id, timestamp, test_case, status, duration_ms, details (object)
+# - backlog: For tasks, ideas, or features noted but not immediately actioned.
+#   Fields: id, timestamp, item_type ('feature_request', 'idea', 'task_deferred'),
+#           summary, details, priority ('low', 'medium', 'high')
+# - bot_status: Records the bot's understanding of its current state.
+#   Fields: id, timestamp, current_plan_step, active_task_summary,
+#           blocked_on (optional), recent_decisions (list), overall_goal
+#
+# Log Rotation Strategy:
+# 1. The primary log file is `combined.yaml`.
+# 2. When `combined.yaml` exceeds 256KB in size, OR the <nnn> part of the
+#    log ID (e.g., 50701.<nnn>.type) exceeds 990, a new log file should
+#    be started.
+# 3. New log files will be named `combined.<mmm>.yaml`, where <mmm> is a
+#    three-digit number starting from `002` and incrementing for each new file
+#    (e.g., `combined.002.yaml`, `combined.003.yaml`).
+# 4. Automation Note: This bot currently cannot automatically monitor file sizes
+#    or entry counts to trigger rotation. Log rotation must be managed manually
+#    or by external scripts/processes based on this defined strategy.
+#
+# Example entry structures:
 # - id: 50701.001.interact
-#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ' # ISO 8601 format
-#   source: 'user' # or 'agent'
-#   message: 'Initial request to create logging structure.'
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   source: 'user'
+#   message: 'Initial request.'
 # - id: 50701.002.dev
 #   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
 #   component: 'logging_setup'
-#   message: 'Created jules/logs directory.'
+#   message: 'Created directory.'
 #   details:
 #     action: 'create_directory'
 #     path: 'jules/logs'
-# - id: 50701.003.run
-#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
-#   event: 'script_start'
-#   script_name: 'main.py'
-# - id: 50701.004.test
-#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
-#   test_case: 'test_user_creation'
-#   status: 'PASS'
-#   duration_ms: 120
 # - id: 50701.005.backlog
 #   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
-#   item_type: 'feature_request' # or 'idea', 'task_deferred'
-#   summary: 'Brief description of the backlogged item.'
-#   details: 'More detailed explanation, rationale, or links to relevant info.'
-#   priority: 'medium' # low, medium, high
+#   item_type: 'feature_request'
+#   summary: 'Brief description.'
+#   details: 'More detailed explanation.'
+#   priority: 'medium'
+# - id: 50701.006.bot_status
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   current_plan_step: "Example: 3a - Create Dockerfile"
+#   active_task_summary: "Setting up QEMU emulation for hello.c via Docker."
+#   blocked_on: "User input for X" # Optional
+#   recent_decisions:
+#     - "Decided to use QEMU due to missing HDL components."
+#     - "Added new 'bot_status' log type."
+#   overall_goal: "Assist user with RISC-V project, currently focusing on QEMU setup."
 
-# Initial log entries based on previous interactions:
+# Actual Log Entries:
 - id: 50701.001.interact
   timestamp: '2024-05-07T10:00:00Z' # Placeholder timestamp
   source: 'user'
@@ -171,9 +199,25 @@
   component: 'logging_config_update'
   message: "Added 'backlog' as a new log entry type to combined.yaml."
   details:
-    change_description: "Added a comment example for 'backlog' type and included this entry as a demonstration."
+    change_description: "Added a comment example for 'backlog' type."
     new_type_fields:
       - 'item_type (e.g., feature_request, idea, task_deferred)'
       - 'summary'
       - 'details'
       - 'priority (optional)'
+- id: 50701.022.interact
+  timestamp: '2024-05-07T12:05:00Z' # Placeholder
+  source: 'user'
+  message: "User requested 'bot_status' log type and log rotation strategy."
+- id: 50701.023.dev
+  timestamp: '2024-05-07T12:06:00Z' # Placeholder
+  component: 'logging_config_update'
+  message: "Defined 'bot_status' log type and log rotation strategy in combined.yaml comments."
+  details:
+    new_type_bot_status_fields:
+      - 'current_plan_step'
+      - 'active_task_summary'
+      - 'blocked_on'
+      - 'recent_decisions'
+      - 'overall_goal'
+    log_rotation_summary: "New file if >256KB or entry >990. Named combined.<mmm>.yaml. Manual process for now."
