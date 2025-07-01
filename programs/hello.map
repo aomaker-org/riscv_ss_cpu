@@ -1,0 +1,55 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+RAM              0x00000000         0x00010000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD programs/crt0.o
+LOAD programs/hello.o
+
+.text.init      0x00000000        0xc
+ *(.text.init)
+ .text.init     0x00000000        0xc programs/crt0.o
+                0x00000000                _start
+
+.text           0x0000000c       0x4c
+ *(.text .text.*)
+ .text          0x0000000c        0x0 programs/crt0.o
+ .text          0x0000000c       0x2c programs/hello.o
+                0x0000000c                print_string
+                0x0000002c                _putchar
+ .text.startup  0x00000038       0x20 programs/hello.o
+                0x00000038                main
+
+.rodata         0x00000058       0x10
+ *(.rodata .rodata.*)
+ .rodata.str1.4
+                0x00000058       0x10 programs/hello.o
+
+.data           0x00000068        0x0
+ *(.data .data.*)
+ .data          0x00000068        0x0 programs/crt0.o
+ .data          0x00000068        0x0 programs/hello.o
+
+.bss            0x00000068        0x0
+ *(.bss .bss.* COMMON)
+ .bss           0x00000068        0x0 programs/crt0.o
+ .bss           0x00000068        0x0 programs/hello.o
+                0x00000068                        _end = .
+OUTPUT(programs/hello.elf elf32-littleriscv)
+
+.riscv.attributes
+                0x00000000       0x2a
+ .riscv.attributes
+                0x00000000       0x28 programs/crt0.o
+ .riscv.attributes
+                0x00000028       0x2a programs/hello.o
+
+.comment        0x00000000       0x22
+ .comment       0x00000000       0x22 programs/hello.o
+                                 0x23 (size before relaxing)

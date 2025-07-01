@@ -21,6 +21,12 @@
 #   test_case: 'test_user_creation'
 #   status: 'PASS'
 #   duration_ms: 120
+# - id: 50701.005.backlog
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   item_type: 'feature_request' # or 'idea', 'task_deferred'
+#   summary: 'Brief description of the backlogged item.'
+#   details: 'More detailed explanation, rationale, or links to relevant info.'
+#   priority: 'medium' # low, medium, high
 
 # Initial log entries based on previous interactions:
 - id: 50701.001.interact
@@ -70,7 +76,7 @@
   message: 'Updated plan to use a combined YAML log file and remove individual .log files.'
   details:
     action: 'set_plan'
-    new_plan_steps: 9 # Including removal of old files
+    new_plan_steps: 9
     previous_step_count: 7
 - id: 50701.009.dev
   timestamp: '2024-05-07T10:08:00Z' # Placeholder timestamp
@@ -79,3 +85,95 @@
   details:
     action: 'create_file_with_block'
     path: 'jules/logs/combined.yaml'
+# Entries for RISC-V CPU exploration and hello.c attempt
+- id: 50701.010.interact
+  timestamp: '2024-05-07T11:00:00Z' # Placeholder
+  source: 'user'
+  message: "User initiated exploration of RISC-V CPU project, asking to compile and run hello.c."
+- id: 50701.011.dev
+  timestamp: '2024-05-07T11:01:00Z'
+  component: 'cpu_exploration'
+  message: "Set plan to explore CPU, set up toolchain, create hello.c, compile, and simulate."
+  details:
+    action: 'set_plan'
+    plan_steps: 8
+- id: 50701.012.run
+  timestamp: '2024-05-07T11:05:00Z'
+  component: 'toolchain_setup'
+  message: "Successfully installed riscv64-unknown-elf-gcc and ghdl."
+  details:
+    commands:
+      - "sudo apt-get update && sudo apt-get install -y gcc-riscv64-unknown-elf ghdl"
+      - "which riscv64-unknown-elf-gcc && which ghdl"
+- id: 50701.013.dev
+  timestamp: '2024-05-07T11:10:00Z'
+  component: 'hello_c_creation'
+  message: "Created software artifacts for hello world program."
+  details:
+    files_created:
+      - 'programs/hello.c'
+      - 'programs/crt0.s'
+      - 'programs/link.ld'
+    mmio_putchar_concept: "Write character to 0xFFFF0000, VHDL simulator to report character."
+- id: 50701.014.run
+  timestamp: '2024-05-07T11:15:00Z'
+  component: 'hello_c_compile'
+  message: "Successfully compiled hello.c and crt0.s, linked, and generated binary/hex files."
+  details:
+    output_files:
+      - 'programs/crt0.o'
+      - 'programs/hello.o'
+      - 'programs/hello.elf'
+      - 'programs/hello.bin'
+      - 'programs/hello.hex'
+    notes: "Initial crt0.s had syntax errors, corrected and recompiled."
+- id: 50701.015.dev
+  timestamp: '2024-05-07T11:20:00Z'
+  component: 'cpu_exploration'
+  message: "Began examining CPU source for integration points (top-level entity, memory models)."
+  details:
+    files_examined:
+      - 'src/ID_STAGE.vhd'
+      - 'src/ex_stage.vhd'
+      - 'test_benches/tb_ex_stage.vhd'
+    searches_performed:
+      - 'grep for "memory"'
+      - 'grep for "Madhu.*memory"'
+      - 'grep for "data" in VHDL files'
+- id: 50701.016.dev
+  timestamp: '2024-05-07T11:25:00Z'
+  component: 'cpu_exploration_findings'
+  message: "Encountered roadblock: No clear top-level CPU entity, instruction fetch mechanism, or specified data memory component found."
+  details:
+    summary: "The project appears to be a collection of individual pipeline stage modules and unit tests. Full integration for running a C program (requiring IF, MEM stages) is not apparent in the current view."
+    impact: "Cannot proceed with integrating MMIO putchar or simulating hello.c without these components."
+- id: 50701.017.interact
+  timestamp: '2024-05-07T11:26:00Z'
+  source: 'agent'
+  message: "Requested user input regarding missing components (top-level CPU, IF, data memory) and how to proceed."
+- id: 50701.018.interact
+  timestamp: '2024-05-07T11:27:00Z' # Placeholder
+  source: 'user'
+  message: "Are all the log entries for this interaction update? Let's document everything we know so far."
+- id: 50701.019.dev
+  timestamp: '2024-05-07T11:28:00Z' # Placeholder
+  component: 'logging'
+  message: "Updated combined.yaml with summary of recent activities and findings regarding hello.c attempt and CPU exploration."
+  details:
+    action: 'overwrite_file_with_block'
+    path: 'jules/logs/combined.yaml'
+- id: 50701.020.interact
+  timestamp: '2024-05-07T12:00:00Z' # Placeholder
+  source: 'user'
+  message: "Go ahead and do what you can. Add a backlog logging type."
+- id: 50701.021.dev
+  timestamp: '2024-05-07T12:01:00Z' # Placeholder
+  component: 'logging_config_update'
+  message: "Added 'backlog' as a new log entry type to combined.yaml."
+  details:
+    change_description: "Added a comment example for 'backlog' type and included this entry as a demonstration."
+    new_type_fields:
+      - 'item_type (e.g., feature_request, idea, task_deferred)'
+      - 'summary'
+      - 'details'
+      - 'priority (optional)'
