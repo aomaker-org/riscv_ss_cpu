@@ -16,18 +16,6 @@
 #   Fields: id, timestamp, current_plan_step, active_task_summary,
 #           blocked_on (optional), recent_decisions (list), overall_goal
 #
-# Log Rotation Strategy:
-# 1. The primary log file is `combined.yaml`.
-# 2. When `combined.yaml` exceeds 256KB in size, OR the <nnn> part of the
-#    log ID (e.g., 50701.<nnn>.type) exceeds 990, a new log file should
-#    be started.
-# 3. New log files will be named `combined.<mmm>.yaml`, where <mmm> is a
-#    three-digit number starting from `002` and incrementing for each new file
-#    (e.g., `combined.002.yaml`, `combined.003.yaml`).
-# 4. Automation Note: This bot currently cannot automatically monitor file sizes
-#    or entry counts to trigger rotation. Log rotation must be managed manually
-#    or by external scripts/processes based on this defined strategy.
-#
 # Example entry structures:
 # - id: 50701.001.interact
 #   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
@@ -189,7 +177,7 @@
   message: "Updated combined.yaml with summary of recent activities and findings regarding hello.c attempt and CPU exploration."
   details:
     action: 'overwrite_file_with_block'
-    path: 'jules/logs/combined.yaml'
+    path: 'jules/logs/combined.yaml' # Original path before rename in this plan
 - id: 50701.020.interact
   timestamp: '2024-05-07T12:00:00Z' # Placeholder
   source: 'user'
@@ -221,3 +209,18 @@
       - 'recent_decisions'
       - 'overall_goal'
     log_rotation_summary: "New file if >256KB or entry >990. Named combined.<mmm>.yaml. Manual process for now."
+- id: 50701.024.interact
+  timestamp: '2024-05-07T12:10:00Z' # Placeholder
+  source: 'user'
+  message: "Let's rename the combined log to projectlog.50701.001.yaml. Let's not worry about log file splitting. That can be human driven. Let's create a readme.md and template.000.yaml with documentation and examples. Keep logging prompt/response in the log file."
+- id: 50701.025.dev
+  timestamp: '2024-05-07T12:11:00Z' # Placeholder
+  component: 'logging_refinement'
+  message: "Refined logging setup: Renamed log file, removed rotation strategy from comments, created README.md and template.000.yaml."
+  details:
+    actions:
+      - Renamed 'jules/logs/combined.yaml' to 'jules/logs/projectlog.50701.001.yaml'.
+      - Removed log rotation comments from 'projectlog.50701.001.yaml'.
+      - Created 'jules/logs/README.md' with documentation of log types and purpose.
+      - Created 'jules/logs/template.000.yaml' with structural examples of log types.
+    log_file_update: "This current entry documents these changes."

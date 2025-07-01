@@ -1,0 +1,72 @@
+# YAML Log Template - projectlog.<project_id>.<sequence_num>.yaml
+# This file serves as a template for the structure of log entries.
+# It should not contain actual log data but rather examples of each type.
+
+# --- Log Type Definitions and Examples ---
+
+# 1. 'interact': Records direct interactions (prompts and responses)
+#                between the user and the Jules AI agent.
+# - id: "<project_id>.<entry_num>.interact"
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   source: 'user' # or 'agent'
+#   message: "The content of the interaction."
+
+# 2. 'dev': Records development-related actions, decisions, code changes,
+#           or significant findings during the agent's work.
+# - id: "<project_id>.<entry_num>.dev"
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   component: "The module, file, or area of focus (e.g., logging_setup, cpu_exploration)"
+#   message: "A summary of the development activity."
+#   details: # (Optional) An object containing more structured information
+#     action: "e.g., create_file, modify_code, analyze_results"
+#     file_path: "path/to/file.ext" # if applicable
+#     key_finding: "A specific important discovery."
+
+# 3. 'run': Records the execution of commands, scripts, or tools by the agent.
+# - id: "<project_id>.<entry_num>.run"
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   component: "The component or context in which the command was run."
+#   event: "A description of the event (e.g., command_start, script_execution)."
+#   script_name: "The actual command or script that was executed." # or 'command'
+#   details: # (Optional) An object for input parameters or output summaries.
+#     input_args: ["arg1", "arg2"]
+#     output_summary: "Brief result of execution."
+
+# 4. 'test': Records details about test executions.
+# - id: "<project_id>.<entry_num>.test"
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   test_case: "Name or description of the test case."
+#   status: "PASS" # or 'FAIL', 'SKIP'
+#   duration_ms: 120 # (Optional) Duration of the test in milliseconds.
+#   details: # (Optional) An object for more specific test outputs or failure reasons.
+#     failure_reason: "Specific error message if status is FAIL."
+#     output_log: "Path to detailed test output log if applicable."
+
+# 5. 'backlog': Logs tasks, ideas, feature requests, or issues that are noted
+#              but not immediately actioned, to be reviewed later.
+# - id: "<project_id>.<entry_num>.backlog"
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   item_type: 'feature_request' # or 'idea', 'task_deferred', 'bug_report'
+#   summary: "A brief description of the backlogged item."
+#   details: "More detailed explanation, rationale, or links to relevant information." # (Optional)
+#   priority: 'medium' # (Optional) e.g., 'low', 'medium', 'high'
+#   assigned_to: "user_or_agent" # (Optional)
+#   status: "open" # (Optional) e.g., 'open', 'in_progress', 'closed'
+
+# 6. 'bot_status': Records the bot's snapshot of its current understanding,
+#                 active plan, and context.
+# - id: "<project_id>.<entry_num>.bot_status"
+#   timestamp: 'YYYY-MM-DDTHH:MM:SSZ'
+#   current_plan_step: "A description of the specific plan step the bot is currently working on or has just completed."
+#   active_task_summary: "A brief summary of the bot's current high-level task."
+#   blocked_on: "If the bot is blocked, a description of what it's waiting for." # (Optional)
+#   recent_decisions: # (Optional) A list of key decisions made recently.
+#     - "Decision A was made because of X."
+#     - "Switched approach from Y to Z."
+#   overall_goal: "The overarching goal the bot is trying to achieve."
+#   confidence_level: "high" # (Optional) e.g., 'low', 'medium', 'high' regarding current task
+#   next_expected_action: "Brief description of what the bot plans to do next." # (Optional)
+
+# --- End of Template ---
+# Actual log entries would follow in a real log file (e.g., projectlog.50701.001.yaml)
+# This file should remain clean as a reference.
