@@ -227,25 +227,53 @@
 - id: 50701.026.interact
   timestamp: '2024-05-07T12:20:00Z' # Placeholder
   source: 'user'
-  message: "Instructed agent on future plan changes (additive only pre-review) and YAML comments. Confirmed to proceed with QEMU setup."
+  message: "Instructed agent on future plan changes (additive only pre-review) and YAML comments. Confirmed to proceed with QEMU setup. User also requested expansion of QEMU setup to a multi-language cross-compilation environment (C, C++, Rust initially, others later) using CMake."
 - id: 50701.027.dev
   timestamp: '2024-05-07T12:25:00Z' # Placeholder
-  component: 'qemu_docker_setup'
-  message: "Created Dockerfile and README.md for QEMU RISC-V user mode emulation in jules/docker/riscv_example/."
+  component: 'qemu_docker_multilang_setup'
+  message: "Initialized multi-language (C, C++, Rust) 'Hello World' projects in jules/docker/riscv_example/src/."
   details:
     files_created:
+      - 'jules/docker/riscv_example/src/c/hello_c.c'
+      - 'jules/docker/riscv_example/src/cpp/hello_cpp.cpp'
+      - 'jules/docker/riscv_example/src/rust/main.rs'
+      - 'jules/docker/riscv_example/src/rust/Cargo.toml'
+- id: 50701.028.dev
+  timestamp: '2024-05-07T12:30:00Z' # Placeholder
+  component: 'qemu_docker_multilang_setup'
+  message: "Developed CMake build system for C, C++, and Rust projects targeting RISC-V."
+  details:
+    files_created:
+      - 'jules/docker/riscv_example/riscv32-unknown-elf.cmake'
+      - 'jules/docker/riscv_example/CMakeLists.txt'
+      - 'jules/docker/riscv_example/src/c/CMakeLists.txt'
+      - 'jules/docker/riscv_example/src/cpp/CMakeLists.txt'
+      - 'jules/docker/riscv_example/src/rust/CMakeLists.txt'
+    cmake_strategy: "Root CMakeLists.txt includes subdirectories. RISC-V target specified via toolchain file. Rust build integrated using ExternalProject_Add to call Cargo."
+- id: 50701.029.dev
+  timestamp: '2024-05-07T12:35:00Z' # Placeholder
+  component: 'qemu_docker_multilang_setup'
+  message: "Updated Dockerfile and created build_all.sh for multi-language cross-compilation environment."
+  details:
+    dockerfile_changes: "Installs CMake, Rust (via rustup with riscv32imac-unknown-none-elf target). Copies new src, CMake files, build_all.sh. Runs build_all.sh. CMD lists available binaries."
+    build_all_sh_summary: "Sources Cargo env, runs CMake configure with toolchain, cmake --build, and cmake --install to /app/bin."
+    files_created:
+      - 'jules/docker/riscv_example/build_all.sh'
+    files_modified:
       - 'jules/docker/riscv_example/Dockerfile'
+- id: 50701.030.dev
+  timestamp: '2024-05-07T12:40:00Z' # Placeholder
+  component: 'qemu_docker_multilang_setup'
+  message: "Updated README.md for the multi-language QEMU Docker environment."
+  details:
+    readme_changes: "Explained new multi-language build process, CMake usage, Rust integration, updated build/run instructions for Docker image 'riscv_multilang_qemu_example', and how to run individual C, C++, Rust examples."
+    files_modified:
       - 'jules/docker/riscv_example/README.md'
-    copied_files:
-      - 'programs/hello.bin' to 'jules/docker/riscv_example/hello.bin'
-    dockerfile_summary: "Ubuntu base, installs qemu-user, gcc-riscv64-unknown-elf. Copies hello.bin. CMD executes qemu-riscv32 /app/hello.bin."
-    readme_summary: "Explains build (docker build -t riscv_qemu_example .) and run (docker run --rm riscv_qemu_example) commands, expected output 'Hello, World!'."
-- id: 50701.028.bot_status
-  timestamp: '2024-05-07T12:26:00Z' # Placeholder
-  current_plan_step: "Step 7: Log QEMU Setup: Add log entry to projectlog.50701.001.yaml."
-  active_task_summary: "Documenting the QEMU Docker setup in the project log."
+- id: 50701.031.bot_status
+  timestamp: '2024-05-07T12:41:00Z' # Placeholder
+  current_plan_step: "Step 7: Log Changes: Add entries to projectlog.50701.001.yaml for these updates."
+  active_task_summary: "Finalizing documentation of the multi-language QEMU Docker setup in the project log."
   recent_decisions:
-    - "Proceeding with QEMU setup in Docker as HDL simulation is blocked."
-    - "Refined logging system (renamed file, added README, template, new log types)."
-    - "Adopted additive changes policy for pre-review plan modifications."
-  overall_goal: "Assist user with RISC-V project tasks, currently setting up QEMU to run a hello.c program."
+    - "Expanded QEMU Docker setup to support C, C++, and Rust cross-compilation using CMake."
+    - "Adopted an incremental approach for adding language support."
+  overall_goal: "Create a versatile RISC-V cross-compilation and QEMU emulation environment within Docker."

@@ -1,0 +1,13 @@
+# jules/docker/riscv_example/src/rust/Cargo.toml
+[package]
+name = "hello_rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+# Depending on the RISC-V target and QEMU capabilities,
+# we might need to configure for no_std or a specific target.
+# For now, this basic setup will try to build for the host or whatever
+# cargo's default is, unless overridden by .cargo/config.toml or build flags.
+# The CMake script will need to pass appropriate --target flags to cargo.
